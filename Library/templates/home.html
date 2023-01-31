@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block content %}
+{% if  request.user.is_authenticated%}
+    <h1>{%trans "Welcome. "%}{{request.user.email}}</h1>
+    <a href="{% url 'account_logout' %}">{%trans "Logout"%}</a>
+{% else %}
+    <h1>{%trans "Not logged in"%}</h1>
+    <a class="btn" href="{% url 'account_login' %}">{%trans "Login"%}</a>
+{% endif %}
+{% endblock content %}

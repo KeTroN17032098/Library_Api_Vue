@@ -1,0 +1,212 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-31 03:11+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\Library\settings.py:132
+msgid "Korean"
+msgstr "한국어"
+
+#: .\Library\settings.py:133
+msgid "English"
+msgstr "영어"
+
+#: .\blacklist\models.py:9
+msgid "Name"
+msgstr "이름"
+
+#: .\blacklist\models.py:10
+msgid "Library ID"
+msgstr "도서관 아이디"
+
+#: .\blacklist\models.py:11
+msgid "Count"
+msgstr "적발횟수"
+
+#: .\blacklist\models.py:12
+msgid "place where this person caught"
+msgstr "적발된 장소"
+
+#: .\blacklist\models.py:13
+msgid "Description"
+msgstr "자세한 정보"
+
+#: .\blacklist\models.py:14 .\board\models.py:13 .\board\models.py:28
+#: .\headcount\models.py:33
+msgid "Created Time"
+msgstr "생성된 시간"
+
+#: .\blacklist\models.py:15 .\board\models.py:14 .\board\models.py:29
+#: .\headcount\models.py:34
+msgid "Modified Time"
+msgstr "마지막으로 변경된 시간"
+
+#: .\blacklist\views.py:45 .\blacklist\views.py:53 .\blacklist\views.py:58
+#: .\blacklist\views.py:88 .\blacklist\views.py:96 .\blacklist\views.py:101
+#: .\board\views.py:40 .\board\views.py:47 .\board\views.py:54
+#: .\board\views.py:83 .\board\views.py:90 .\board\views.py:97
+#: .\board\views.py:104 .\headcount\views.py:42 .\headcount\views.py:47
+#: .\headcount\views.py:54 .\headcount\views.py:59 .\headcount\views.py:98
+#: .\headcount\views.py:106 .\headcount\views.py:111 .\headcount\views.py:142
+#: .\headcount\views.py:147 .\headcount\views.py:157 .\headcount\views.py:162
+msgid "Invalid Request"
+msgstr "유효하지 않은 요청입니다."
+
+#: .\blacklist\views.py:62 .\blacklist\views.py:105 .\board\views.py:58
+#: .\board\views.py:108 .\headcount\views.py:63 .\headcount\views.py:115
+#: .\headcount\views.py:166
+msgid "Delete Completed"
+msgstr "삭제 완료"
+
+#: .\board\models.py:9
+msgid "Title"
+msgstr "제목"
+
+#: .\board\models.py:11
+msgid "File"
+msgstr "파일"
+
+#: .\board\models.py:12 .\board\models.py:27
+msgid "Body"
+msgstr "본문"
+
+#: .\board\models.py:15 .\board\models.py:30 .\headcount\models.py:35
+#, fuzzy
+#| msgid "Created Time"
+msgid "Who Created"
+msgstr "생성된 시간"
+
+#: .\board\models.py:16 .\board\models.py:31 .\headcount\models.py:36
+#, fuzzy
+#| msgid "Modified Time"
+msgid "Who Modified"
+msgstr "마지막으로 변경된 시간"
+
+#: .\board\models.py:22
+msgid "Thread"
+msgstr "게시물"
+
+#: .\board\models.py:23
+msgid "Threads"
+msgstr "게시물들"
+
+#: .\board\models.py:26
+msgid "Thread that owned this comment"
+msgstr "댓글이 소속된 게시물"
+
+#: .\board\models.py:37
+msgid "Comment"
+msgstr "댓글"
+
+#: .\board\models.py:38
+msgid "Comments"
+msgstr "댓글들"
+
+#: .\headcount\models.py:14
+msgid "Place"
+msgstr "장소"
+
+#: .\headcount\models.py:15
+msgid "Places"
+msgstr "장소들"
+
+#: .\headcount\models.py:18
+msgid "Place originated"
+msgstr "소속된 장소"
+
+#: .\headcount\models.py:25
+msgid "Subplace"
+msgstr "구체적 장소"
+
+#: .\headcount\models.py:26
+msgid "Subplaces"
+msgstr "구체적인 장소들"
+
+#: .\headcount\models.py:29
+msgid "Subplace originated"
+msgstr "소속된 구체적 장소"
+
+#: .\headcount\models.py:30
+#, fuzzy
+#| msgid "Count"
+msgid "Count Date"
+msgstr "적발횟수"
+
+#: .\headcount\models.py:31 .\headcount\models.py:32
+#, fuzzy
+#| msgid "Count"
+msgid "Male Count"
+msgstr "적발횟수"
+
+#: .\headcount\models.py:42
+#, fuzzy
+#| msgid "Count"
+msgid "Dailycount"
+msgstr "적발횟수"
+
+#: .\headcount\models.py:43
+msgid "Dailycounts"
+msgstr "적발횟수들"
+
+#: .\headcount\serializers.py:49 .\headcount\serializers.py:76
+msgid "Certain Place does not exist."
+msgstr "해당 장소는 존재허지 않습니다."
+
+#: .\headcount\serializers.py:54
+msgid "Already Exist"
+msgstr "이미 존재합니다."
+
+#: .\headcount\serializers.py:78
+msgid "Certain Subplace does not exist."
+msgstr "해당 구체적인 장소는 존재하지 않습니다."
+
+#: .\headcount\serializers.py:109
+msgid "Certain DailyCount does not exist."
+msgstr "해당 날짜의 데이터는 존재하지 않습니다."
+
+#: .\templates\home.html:5
+msgid "Welcome. "
+msgstr "어서오세요."
+
+#: .\templates\home.html:6
+msgid "Logout"
+msgstr "로그아웃"
+
+#: .\templates\home.html:8
+msgid "Not logged in"
+msgstr "로그인 되어 있지 않음"
+
+#: .\templates\home.html:9
+msgid "Login"
+msgstr "로그인"
+
+#: .\users\managers.py:7
+msgid "The Email must be set"
+msgstr "이메일을 반드시 입력해야합니다."
+
+#: .\users\managers.py:20
+msgid "Superuser must have is_staff=True."
+msgstr "관리자 유저는 관리자 여부에 반드시 체크되어있어야 합니다."
+
+#: .\users\managers.py:22
+msgid "Superuser must have is_superuser=True."
+msgstr "관리자 유저는 슈퍼관리자 여부에 반드시 체크되어있어야 합니다."
+
+#: .\users\models.py:9
+msgid "email address"
+msgstr "이메일 주소"
