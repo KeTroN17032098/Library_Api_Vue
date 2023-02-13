@@ -5,12 +5,14 @@ import { loadFonts } from './plugins/webfontloader'
 import axios from 'axios';
 import { router } from './router/index.js'
 import store from './store/index.js'
-
+import Vue3Toasity from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 loadFonts()
 
 const app = createApp(App)
 app.use(router)
+app.use(Vue3Toasity)
 app.use(store)
 app.config.globalProperties.$axios = axios
 app.use(vuetify)

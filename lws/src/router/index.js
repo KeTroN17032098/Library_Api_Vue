@@ -5,11 +5,13 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import functions from './beFunctions.js'
 import Signin from '../views/Signin.vue'
+import SCallback from '../views/callback.vue'
 // 라우터 설계
 const routes = [
     { path: '/', component: Home, beforeEnter: functions.requireAuth, name: 'home' },
     { path: '/login', component: Login, name: 'login' },
-    { path: '/signin', component: Signin, name: 'signin' }
+    { path: '/signin', component: Signin, name: 'signin' },
+    { path: '/callback', component: SCallback, name: 'scallback' },
 ]
 
 // 라우터 생성

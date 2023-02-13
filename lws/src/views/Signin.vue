@@ -54,7 +54,7 @@
         Back
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-if="step ==1" color="primary" variant="flat" @click=page1>
+      <v-btn v-if="step ==1" color="primary" variant="flat" @click="page1">
         Next
       </v-btn>
       <v-btn v-if="(step == 2)" color="primary" variant="flat" @click="step++">
@@ -78,7 +78,7 @@ export default {
       step: 1,
       writtenEmail: '',
       writtenPassword: '',
-      rules: this.$store.state.userStore.rules,
+      rules: this.$store.state.ruleStore.rules,
       emb:false,
       errormessage: ''
     }

@@ -16,6 +16,7 @@ import os
 from django.utils.translation import gettext_lazy as _
 import json
 from django.core.exceptions import ImproperlyConfigured
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,18 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 secret_file = os.path.join(BASE_DIR, 'secret/secret.json')  # secrets.json 파일 위치를 명시
-with open(secret_file) as f:
-    secrets = json.loads(f.read())
-def get_secret(setting):
-    """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
+secrets = json.loads(open(secret_file).read())
+for key, value in secrets.items():
+    setattr(sys.modules[__name__], key, value)
 
 
-SECRET_KEY = get_secret("SECRET_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -65,6 +60,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.naver',
     #resr_framework
     'rest_framework',
     'rest_framework.authtoken', 
@@ -109,16 +106,7 @@ WSGI_APPLICATION = 'Library.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default' : {
-        'ENGINE': 'django.db.backends.mysql',   
-        'NAME': 'library',                  
-        'USER': 'api',                         
-        'PASSWORD': '1234pass',                 
-        'HOST': 'localhost',                    
-        'PORT': '3306',                          
-    }
-}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -208,9 +196,7 @@ EMAIL_HOST = 'smtp.gmail.com' # 메일 호스트 서버
 
 EMAIL_PORT = '587' # gmail과 통신하는 포트
  
-EMAIL_HOST_USER = get_secret("email")
 
-EMAIL_HOST_PASSWORD = get_secret("email_password")
 
 EMAIL_USE_TLS = True # TLS 보안 방법
 
@@ -236,3 +222,5 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 
 ]
+LOGIN_REDIRECT_URL=VUE_SIGNUP_PAGE
+
