@@ -14,6 +14,7 @@
                 <v-list>
                     <v-list-item>
                         <v-list-item-title>{{ this.user_email }}</v-list-item-title>
+                        <v-list-item-subtitle>logined via {{ this.user_provider }}</v-list-item-subtitle>
                     </v-list-item>
                 </v-list>
 
@@ -41,7 +42,8 @@ export default {
         return {
             time: "",
             interval: null,
-            user_email:"df"
+            user_email:"df",
+            user_provider:"",
         }
     },
     mounted() {
@@ -53,6 +55,7 @@ export default {
             }).format()
         }, 1000)
         this.user_email=this.$store.state.userStore.userEmail
+        this.user_provider=this.$store.state.userStore.login_provider
     },
     beforeUnmount() {
         clearInterval(this.interval)

@@ -6,3 +6,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =['id','email','is_staff']
+        
+class SPASocialLoginSerializer(serializers.Serializer):
+    code=serializers.CharField()
+    state_string=serializers.CharField()

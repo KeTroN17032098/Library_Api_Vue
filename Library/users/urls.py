@@ -29,5 +29,5 @@ urlpatterns = [
     path('sociallogin/naver/callback/',NaverSocialLoginMethodSet.naver_callback,name='naver_callback'),
     path('sociallogin/naver/finish/',NaverLogin.as_view(), name='naver_login_todjango'),
 
-    path('sociallogin/SPA',SocialLoginForSPA.as_view(), name='spa_sociallogin'),
+    path('sociallogin/SPA/<str:provider>/',SocialLoginForSPA.as_view(), name='spa_sociallogin'),
 ]

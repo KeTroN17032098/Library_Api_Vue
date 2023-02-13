@@ -20,7 +20,7 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from django.http import JsonResponse
 import requests
 from json.decoder import JSONDecodeError
-
+from .serializers import SPASocialLoginSerializer
 
 class CConfirmEmailView(APIView):
     permission_classes = [AllowAny]
@@ -67,6 +67,7 @@ class CustomResendEmailVerification(APIView):
 
 state = getattr(settings, 'STATE')
 BASE_URL = 'http://localhost:8000/'
+SPA_URL='http://localhost:8080/'
 GOOGLE_CALLBACK_URI = BASE_URL + 'api/accounts/v1/sociallogin/google/callback/'
 GOOGLE_FINISH_URL = BASE_URL+'api/accounts/v1/sociallogin/google/finish/'
 google_scope = "https://www.googleapis.com/auth/userinfo.email"
@@ -79,7 +80,9 @@ NAVER_CALLBACK_URI = BASE_URL+'api/accounts/v1/sociallogin/naver/callback/'
 NAVER_FINSH_URL = BASE_URL+'api/accounts/v1/sociallogin/naver/finish/'
 naver_client_id = getattr(settings, 'SOCIAL_AUTH_NAVER_CLIENT_ID')
 naver_client_secret = getattr(settings, 'SOCIAL_AUTH_NAVER_SECRET')
-
+spa_google_callback=SPA_URL+'callback/google'
+spa_kakao_callback=SPA_URL+'callback/kakao'
+spa_naver_callback=SPA_URL+'callback/naver'
 
 def google_login(request):
     """
@@ -298,49 +301,53 @@ class NaverLogin(SocialLoginView):
 
 
 class SocialLoginForSPA(APIView):
-    def get(self, request):
-        provider = request.GET.get('provider')
-        data = []
+    def get(self, request,**kwargs):
+        provider = kwargs.get('provider')
+        data = {}
         if provider is None:
             return Response(_("No provider specified"), status=status.HTTP_400_BAD_REQUEST)
         elif provider.lower() == 'naver':
-            data['url'] = f"https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id={naver_client_id}&state=STATE_STRING&redirect_uri={NAVER_CALLBACK_URI}"
+            data['url'] = f"https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id={naver_client_id}&state=STATE_STRING&redirect_uri={spa_naver_callback}"
         elif provider.lower() == 'kakao':
-            data['url'] = f"https://kauth.kakao.com/oauth/authorize?client_id={kakao_client_id}&redirect_uri={KAKAO_CALLBACK_URI}&response_type=code&scope=account_email"
+            data['url'] = f"https://kauth.kakao.com/oauth/authorize?client_id={kakao_client_id}&redirect_uri={spa_kakao_callback}&response_type=code&scope=account_email"
         elif provider.lower() == "google":
-            data['url'] = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={client_id}&response_type=code&redirect_uri={GOOGLE_CALLBACK_URI}&scope={google_scope}"
+            data['url'] = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={google_client_id}&response_type=code&redirect_uri={spa_google_callback}&scope={google_scope}"
         else:
             return Response(_("Unsupported provider specified"), status=status.HTTP_400_BAD_REQUEST)
 
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        provider = request.GET.get('provider')
-        data = []
+    def post(self, request,**kwargs):
+        provider = kwargs.get('provider')
+        data = {}
         if provider is None:
             return Response(_("No provider specified"), status=status.HTTP_400_BAD_REQUEST)
-        state_string = request.GET.get('state')
-        code = request.GET.get('code')
+        code=request.data.get('code')
+        state_string = request.data.get('state_string')
         token_url = ''
         if provider.lower() == 'naver':
             token_url = f"https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id={naver_client_id}&client_secret={naver_client_secret}&code={code}&state={state_string}"
         elif provider.lower() == 'kakao':
-            token_url = f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={kakao_client_id}&redirect_uri={KAKAO_CALLBACK_URI}&code={code}"
+            token_url = f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={kakao_client_id}&redirect_uri={spa_kakao_callback}&code={code}"
         elif provider.lower() == "google":
-            token_url = f"https://oauth2.googleapis.com/token?client_id={google_client_id}&client_secret={google_client_secret}&code={code}&grant_type=authorization_code&redirect_uri={GOOGLE_CALLBACK_URI}&state={state}"
+            token_url = f"https://oauth2.googleapis.com/token?client_id={google_client_id}&client_secret={google_client_secret}&code={code}&grant_type=authorization_code&redirect_uri={spa_google_callback}&state={state}"
         else:
             return Response(_("Unsupported provider specified"), status=status.HTTP_400_BAD_REQUEST)
+        print("token url set")
         token_request = requests.post(token_url)
         trj = token_request.json()
         error = trj.get('error', None)
         if error is not None:
+            print(trj)
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
+        print("no error")
         access_token = trj.get('access_token', None)
         if provider.lower() == 'naver':
             pr = requests.post(
                 "https://openapi.naver.com/v1/nid/me",
                 headers={'Authorization': f"Bearer {access_token}"}
             )
+            prj = pr.json()
             email = prj.get('response').get('email')
             FINISH_URL=NAVER_FINSH_URL
         elif provider.lower() == 'kakao':
@@ -369,7 +376,7 @@ class SocialLoginForSPA(APIView):
             # 기존에 가입된 유저의 Provider가 google이 아니면 에러 발생, 맞으면 로그인
             # 다른 SNS로 가입된 유저
             social_user = SocialAccount.objects.get(user=user)
-            if social_user.provider != 'google':
+            if social_user.provider not in ['google','naver','kakao']:
                 return Response({'err_msg': _('no matching social type')}, status=status.HTTP_400_BAD_REQUEST)
             if social_user == None:
                 return Response({'err_msg': _('email exists but not social user')}, status=status.HTTP_400_BAD_REQUEST)
@@ -391,3 +398,5 @@ class SocialLoginForSPA(APIView):
                 return Response({'err_msg': 'failed to signup'}, status=accept_status)
             accept_json = accept.json()
             return Response(accept_json, status=status.HTTP_201_CREATED)
+        except SocialAccount.DoesNotExist:
+            return Response({'err_msg': _('email exists but not social user')}, status=status.HTTP_400_BAD_REQUEST)

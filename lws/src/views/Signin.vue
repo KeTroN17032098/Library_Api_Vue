@@ -10,8 +10,9 @@
       <v-window-item :value="1">
         <v-card-text>
           <v-form ref="form" lazy-validation>
-          <v-text-field label="Email" placeholder="john@google.com" v-model="writtenEmail"
-            :rules="[rules.required, rules.email]"></v-text-field>
+            <v-text-field label="Email" placeholder="john@google.com" v-model="writtenEmail"
+              :rules="[rules.required, rules.email]"
+              v-on:keyup.enter="page1"></v-text-field>
           </v-form>
           <span class="text-caption text-grey-darken-1">
             This is the email you will use to login to your Vuetify account
@@ -21,7 +22,8 @@
 
       <v-window-item :value="2">
         <v-card-text>
-          <v-text-field label="Password" type="password" :rules="[rules.required, rules.counter,rules.minvalue]"></v-text-field>
+          <v-text-field label="Password" type="password"
+            :rules="[rules.required, rules.counter, rules.minvalue]"></v-text-field>
           <span class="text-caption text-grey-darken-1">
             Please enter a password for your account
           </span>
@@ -50,14 +52,14 @@
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn v-if="(step > 1)&&(step < 3)" variant="text" @click="step--">
+      <v-btn v-if="step==2" variant="text" @click="step--">
         Back
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-if="step ==1" color="primary" variant="flat" @click="page1">
+      <v-btn v-if="step == 1" color="primary" variant="flat" @click="page1">
         Next
       </v-btn>
-      <v-btn v-if="(step == 2)" color="primary" variant="flat" @click="step++">
+      <v-btn v-if="(step == 2)" color="primary" variant="flat" @click="signup">
         Sign-Up
       </v-btn>
       <v-btn v-if="(step == 4)" color="primary" variant="flat">
@@ -65,13 +67,11 @@
       </v-btn>
     </v-card-actions>
   </v-card>
-  <v-alert
-  v-if="emb==true"
-        type="error"
-        >Something is wrong</v-alert>
+  <v-alert v-if="emb == true" type="error">Something is wrong</v-alert>
 </template>
 
 <script>
+import { toast } from 'vue3-toastify'
 export default {
   data() {
     return {
@@ -79,7 +79,7 @@ export default {
       writtenEmail: '',
       writtenPassword: '',
       rules: this.$store.state.ruleStore.rules,
-      emb:false,
+      emb: false,
       errormessage: ''
     }
   },
@@ -95,18 +95,22 @@ export default {
     },
   },
   methods: {
-    page1(){
-      console.log("dsa")
-      const validate=this.$refs.form.validate()
-      if(validate){
-        this.emb=false
-        this.errormessage=""
+    page1() {
+      console.log()
+      if(typeof(this.rules.required(this.writtenEmail))=='string'){
+        toast.error(this.rules.required(this.writtenEmail), {
+          autoClose: 1000,
+        })
+      }else if(typeof(this.rules.email(this.writtenEmail))=='string'){
+        toast.error(this.rules.email(this.writtenEmail), {
+          autoClose: 1000,
+        })
+      }else{
         this.step++
       }
-      else{
-        this.emb=true
-        this.errormessage="Need to complete the validation"
-      }
+    },
+    page2(){
+
     },
     signup() {
       let payload = {}
@@ -114,26 +118,28 @@ export default {
       payload.Email = this.writtenEmail
       payload.Password1 = this.writtenPassword
       payload.Password2 = this.writtenPassword
-      try {
-        this.$axios
-          .post("http://localhost:8000/api/accounts/v1/registration/", JSON.stringify(payload), {
-            headers: {
-              "Content-Type": `application/json`,
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              // 로그인 성공시 처리해줘야할 부분
-              let payload2 = {}
-              payload2.userEmail = res.data.user.email
-              payload2.token = res.data.access_token
-              console.log(res)
-              this.$store.commit("signup", payload2)
-            }
-          });
-      } catch (error) {
-        console.error(error);
-      }
+
+      this.$axios
+        .post("http://localhost:8000/api/accounts/v1/registration/", JSON.stringify(payload), {
+          headers: {
+            "Content-Type": `application/json`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            // 로그인 성공시 처리해줘야할 부분
+            let payload2 = {}
+            payload2.userEmail = res.data.user.email
+            payload2.token = res.data.access_token
+            console.log(res)
+            this.$store.commit("signup", payload2)
+          }
+        })
+        .catch(error=> {
+        toast.error(error.request.responseText, {
+          autoClose: 1000,
+        })
+      })
     }
   }
 }

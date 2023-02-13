@@ -45,18 +45,23 @@
                                                     @click="linktosignup">SignIn</v-btn>
                                             </v-card-actions>
                                             <v-card-actions>
-                                                <v-img src="http://localhost:8000/static/img/nlogin1.png"
-                                                :height="100" v-on:click="openPopup" />
-                                            </v-card-actions>
-                                            <v-card-actions>
-                                                <v-img src="http://localhost:8000/static/img/glogin.png"
-                                                :height="100"
-                                                 v-on:click="loginSubmit" />
+                                                <v-img
+                                                id="naver"                                                
+                                                src="http://localhost:8000/static/img/nlogin1.png"
+                                                :height="100" v-on:click="openSociallogin" />
                                             </v-card-actions>
                                             <v-card-actions>
                                                 <v-img
+                                                id="google"
+                                                src="http://localhost:8000/static/img/glogin.png"
                                                 :height="100"
-                                                src="http://localhost:8000/static/img/kakao_login.png" v-on:click="loginSubmit" />
+                                                 v-on:click="openSociallogin" />
+                                            </v-card-actions>
+                                            <v-card-actions>
+                                                <v-img
+                                                id="kakao"
+                                                :height="100"
+                                                src="http://localhost:8000/static/img/kakao_login.png" v-on:click="openSociallogin" />
                                             </v-card-actions>
                                         </v-form>
                                     </v-col>
@@ -106,8 +111,10 @@ export default {
                         let payload = {}
                         payload.userEmail = res.data.user.email
                         payload.token = res.data.access_token
+                        payload.login_provider='native vue'
                         console.log(res)
                         this.$store.commit("login", payload)
+
                     }
                 })
                 .catch(error => {
@@ -126,8 +133,23 @@ export default {
         linktosignup() {
             this.$router.push('signin')
         },
-        openPopup() {
-            window.open("http://localhost:8000/api/accounts/v1/sociallogin/kakao/login/",'popupView')
+        openSociallogin(event) {
+            let kakaourl='';
+            this.$axios
+                .get("http://localhost:8000/api/accounts/v1/sociallogin/SPA/"+event.currentTarget.id+"/",{
+                    headers: {
+                        "Content-Type": `application/json`,
+                    },
+                })
+                .then((res)=>{
+                    window.location.replace(res.data.url)
+                })
+                .catch(error => {
+                    toast.error(error.request.responseText,{
+                        autoClose:1000,
+
+                    })
+                })
         }
     },
 };

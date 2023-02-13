@@ -11,7 +11,9 @@ const routes = [
     { path: '/', component: Home, beforeEnter: functions.requireAuth, name: 'home' },
     { path: '/login', component: Login, name: 'login' },
     { path: '/signin', component: Signin, name: 'signin' },
-    { path: '/callback', component: SCallback, name: 'scallback' },
+    { path: '/callback/naver', component: SCallback, name: 'scallback_naver' },
+    { path: '/callback/kakao', component: SCallback, name: 'scallback_kakao' },
+    { path: '/callback/google', component: SCallback, name: 'scallback_google' },
 ]
 
 // 라우터 생성
