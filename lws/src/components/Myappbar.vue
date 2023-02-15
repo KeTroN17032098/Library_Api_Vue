@@ -73,7 +73,6 @@ export default {
                         if (res.status === 200) {
                             // 로그인 성공시 처리해줘야할 부분
                             this.$store.commit("logout");
-                            this.$store.commit("loginCheck");
                         }
                     });
             }

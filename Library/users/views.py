@@ -370,14 +370,14 @@ class SocialLoginForSPA(APIView):
             email = email_req_json.get('email')
             FINISH_URL=GOOGLE_FINISH_URL
         try:
-            print(email)
             user = User.objects.get(email=email)
-            print(user)
-            # 기존에 가입된 유저의 Provider가 google이 아니면 에러 발생, 맞으면 로그인
+            # 기존에 가입된 유저의 Provider와 일치 하지 않으면 에러
             # 다른 SNS로 가입된 유저
             social_user = SocialAccount.objects.get(user=user)
             if social_user.provider not in ['google','naver','kakao']:
                 return Response({'err_msg': _('no matching social type')}, status=status.HTTP_400_BAD_REQUEST)
+            elif social_user.provider!=provider:
+                return Response({'err_msg': _('Already logined via other social login')}, status=status.HTTP_400_BAD_REQUEST)
             if social_user == None:
                 return Response({'err_msg': _('email exists but not social user')}, status=status.HTTP_400_BAD_REQUEST)
             # 기존에 Google로 가입된 유저

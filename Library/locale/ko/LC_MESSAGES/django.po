@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 03:11+0900\n"
+"POT-Creation-Date: 2023-02-14 17:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\Library\settings.py:132
+#: .\Library\settings.py:134
 msgid "Korean"
 msgstr "한국어"
 
-#: .\Library\settings.py:133
+#: .\Library\settings.py:135
 msgid "English"
 msgstr "영어"
 
@@ -46,30 +46,32 @@ msgstr "적발된 장소"
 msgid "Description"
 msgstr "자세한 정보"
 
-#: .\blacklist\models.py:14 .\board\models.py:13 .\board\models.py:28
+#: .\blacklist\models.py:14 .\board\models.py:11 .\board\models.py:44
 #: .\headcount\models.py:33
 msgid "Created Time"
 msgstr "생성된 시간"
 
-#: .\blacklist\models.py:15 .\board\models.py:14 .\board\models.py:29
+#: .\blacklist\models.py:15 .\board\models.py:12 .\board\models.py:45
 #: .\headcount\models.py:34
 msgid "Modified Time"
 msgstr "마지막으로 변경된 시간"
 
 #: .\blacklist\views.py:45 .\blacklist\views.py:53 .\blacklist\views.py:58
 #: .\blacklist\views.py:88 .\blacklist\views.py:96 .\blacklist\views.py:101
-#: .\board\views.py:40 .\board\views.py:47 .\board\views.py:54
-#: .\board\views.py:83 .\board\views.py:90 .\board\views.py:97
-#: .\board\views.py:104 .\headcount\views.py:42 .\headcount\views.py:47
-#: .\headcount\views.py:54 .\headcount\views.py:59 .\headcount\views.py:98
-#: .\headcount\views.py:106 .\headcount\views.py:111 .\headcount\views.py:142
-#: .\headcount\views.py:147 .\headcount\views.py:157 .\headcount\views.py:162
+#: .\board\views.py:23 .\board\views.py:37 .\board\views.py:60
+#: .\board\views.py:86 .\board\views.py:121 .\board\views.py:128
+#: .\board\views.py:135 .\board\views.py:164 .\board\views.py:171
+#: .\board\views.py:178 .\board\views.py:185 .\headcount\views.py:42
+#: .\headcount\views.py:47 .\headcount\views.py:54 .\headcount\views.py:59
+#: .\headcount\views.py:98 .\headcount\views.py:106 .\headcount\views.py:111
+#: .\headcount\views.py:142 .\headcount\views.py:147 .\headcount\views.py:157
+#: .\headcount\views.py:162
 msgid "Invalid Request"
 msgstr "유효하지 않은 요청입니다."
 
-#: .\blacklist\views.py:62 .\blacklist\views.py:105 .\board\views.py:58
-#: .\board\views.py:108 .\headcount\views.py:63 .\headcount\views.py:115
-#: .\headcount\views.py:166
+#: .\blacklist\views.py:62 .\blacklist\views.py:105 .\board\views.py:64
+#: .\board\views.py:90 .\board\views.py:139 .\board\views.py:189
+#: .\headcount\views.py:63 .\headcount\views.py:115 .\headcount\views.py:166
 msgid "Delete Completed"
 msgstr "삭제 완료"
 
@@ -77,45 +79,87 @@ msgstr "삭제 완료"
 msgid "Title"
 msgstr "제목"
 
-#: .\board\models.py:11
-msgid "File"
-msgstr "파일"
-
-#: .\board\models.py:12 .\board\models.py:27
+#: .\board\models.py:10 .\board\models.py:43
 msgid "Body"
 msgstr "본문"
 
-#: .\board\models.py:15 .\board\models.py:30 .\headcount\models.py:35
+#: .\board\models.py:13 .\board\models.py:46 .\headcount\models.py:35
 #, fuzzy
 #| msgid "Created Time"
 msgid "Who Created"
 msgstr "생성된 시간"
 
-#: .\board\models.py:16 .\board\models.py:31 .\headcount\models.py:36
+#: .\board\models.py:14 .\board\models.py:47 .\headcount\models.py:36
 #, fuzzy
 #| msgid "Modified Time"
 msgid "Who Modified"
 msgstr "마지막으로 변경된 시간"
 
-#: .\board\models.py:22
+#: .\board\models.py:20
 msgid "Thread"
 msgstr "게시물"
 
-#: .\board\models.py:23
+#: .\board\models.py:21
 msgid "Threads"
 msgstr "게시물들"
 
-#: .\board\models.py:26
+#: .\board\models.py:24
+#, fuzzy
+#| msgid "Thread that owned this comment"
+msgid "Thread that owned this images"
+msgstr "댓글이 소속된 게시물"
+
+#: .\board\models.py:29
+#, fuzzy
+#| msgid "Thread"
+msgid "ThreadImage"
+msgstr "게시물"
+
+#: .\board\models.py:30
+#, fuzzy
+#| msgid "Threads"
+msgid "ThreadImages"
+msgstr "게시물들"
+
+#: .\board\models.py:33
+#, fuzzy
+#| msgid "Thread that owned this comment"
+msgid "Thread that owned this files"
+msgstr "댓글이 소속된 게시물"
+
+#: .\board\models.py:34
+msgid "File"
+msgstr "파일"
+
+#: .\board\models.py:38
+#, fuzzy
+#| msgid "Thread"
+msgid "ThreadFile"
+msgstr "게시물"
+
+#: .\board\models.py:39
+#, fuzzy
+#| msgid "Threads"
+msgid "ThreadFiles"
+msgstr "게시물들"
+
+#: .\board\models.py:42
 msgid "Thread that owned this comment"
 msgstr "댓글이 소속된 게시물"
 
-#: .\board\models.py:37
+#: .\board\models.py:53
 msgid "Comment"
 msgstr "댓글"
 
-#: .\board\models.py:38
+#: .\board\models.py:54
 msgid "Comments"
 msgstr "댓글들"
+
+#: .\board\views.py:19 .\board\views.py:33
+#, fuzzy
+#| msgid "Thread"
+msgid "No Thread ID"
+msgstr "게시물"
 
 #: .\headcount\models.py:14
 msgid "Place"
@@ -179,22 +223,6 @@ msgstr "해당 구체적인 장소는 존재하지 않습니다."
 msgid "Certain DailyCount does not exist."
 msgstr "해당 날짜의 데이터는 존재하지 않습니다."
 
-#: .\templates\home.html:5
-msgid "Welcome. "
-msgstr "어서오세요."
-
-#: .\templates\home.html:6
-msgid "Logout"
-msgstr "로그아웃"
-
-#: .\templates\home.html:8
-msgid "Not logged in"
-msgstr "로그인 되어 있지 않음"
-
-#: .\templates\home.html:9
-msgid "Login"
-msgstr "로그인"
-
 #: .\users\managers.py:7
 msgid "The Email must be set"
 msgstr "이메일을 반드시 입력해야합니다."
@@ -210,3 +238,50 @@ msgstr "관리자 유저는 슈퍼관리자 여부에 반드시 체크되어있�
 #: .\users\models.py:9
 msgid "email address"
 msgstr "이메일 주소"
+
+#: .\users\views.py:33
+msgid "Email Verified"
+msgstr "이메일 인증되었습니다."
+
+#: .\users\views.py:44 .\users\views.py:65
+msgid "Email Not Exist"
+msgstr "해당 이메일로 가입된 회원이 존재하지 않습니다."
+
+#: .\users\views.py:63
+msgid "Resend"
+msgstr "재전송됨"
+
+#: .\users\views.py:133 .\users\views.py:200 .\users\views.py:269
+#: .\users\views.py:378
+msgid "no matching social type"
+msgstr "제공된 소셜 로그인 서비스와 호환되는 서비스를 찾을수 없습니다."
+
+#: .\users\views.py:135 .\users\views.py:202 .\users\views.py:224
+#: .\users\views.py:271 .\users\views.py:294 .\users\views.py:382
+#: .\users\views.py:402
+msgid "email exists but not social user"
+msgstr "이미 가입된 유저입니다."
+
+#: .\users\views.py:308 .\users\views.py:324
+msgid "No provider specified"
+msgstr "소셜 로그인 서비스가 특정되지 않았습니다."
+
+#: .\users\views.py:316 .\users\views.py:335
+msgid "Unsupported provider specified"
+msgstr "지원되지 않은 소셜 로그인입니다."
+
+#: .\users\views.py:380
+msgid "Already logined via other social login"
+msgstr "이미 다른 소셜로그인으로 가입된 회원입니다."
+
+#~ msgid "Welcome. "
+#~ msgstr "어서오세요."
+
+#~ msgid "Logout"
+#~ msgstr "로그아웃"
+
+#~ msgid "Not logged in"
+#~ msgstr "로그인 되어 있지 않음"
+
+#~ msgid "Login"
+#~ msgstr "로그인"

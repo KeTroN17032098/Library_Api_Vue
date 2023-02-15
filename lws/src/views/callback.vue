@@ -30,6 +30,7 @@ export default {
                 let payload = {}
                 payload.userEmail = res.data.user.email
                 payload.token = res.data.access_token
+                payload.refresh_token = res.data.refresh_token
                 payload.login_provider=provider
                 this.$store.commit("login", payload)
             })
