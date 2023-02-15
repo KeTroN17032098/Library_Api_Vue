@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     #resr_framework
     'rest_framework',
     'rest_framework.authtoken', 
+    'rest_framework_simplejwt',
     #dj_rest_auth
     'dj_rest_auth',
     'dj_rest_auth.registration',
@@ -224,3 +225,13 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGIN_REDIRECT_URL=VUE_SIGNUP_PAGE
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=7),
+}

@@ -7,7 +7,6 @@ from .views import NaverSocialLoginMethodSet,NaverLogin,SocialLoginForSPA
 
 urlpatterns = [
     path('', include('dj_rest_auth.urls')),
-    path('',include('allauth.urls')),
         re_path(r'^registration/account-confirm-email/$', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     # 유저가 클릭한 이메일(=링크) 확인
         re_path(

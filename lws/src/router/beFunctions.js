@@ -40,10 +40,11 @@ let requireAuth = function requireAuth(to, from, next) {
     } else {
         isverified = false
     }
+    console.log(isverified)
     if (isverified) {
-        next('/login')
-    } else {
         return next()
+    } else {
+        return next('/login')
     }
 }
 

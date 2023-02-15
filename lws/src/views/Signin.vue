@@ -11,8 +11,8 @@
         <v-card-text>
           <v-form ref="form" lazy-validation>
             <v-text-field label="Email" placeholder="john@google.com" v-model="writtenEmail"
-              :rules="[rules.required, rules.email]"
-              v-on:keyup.enter="page1"></v-text-field>
+            onSubmit="return false;"
+              :rules="[rules.required, rules.email]" v-on:keydown.enter.prevent="page1"></v-text-field>
           </v-form>
           <span class="text-caption text-grey-darken-1">
             This is the email you will use to login to your Vuetify account
@@ -22,8 +22,12 @@
 
       <v-window-item :value="2">
         <v-card-text>
-          <v-text-field label="Password" type="password"
-            :rules="[rules.required, rules.counter, rules.minvalue]"></v-text-field>
+          <v-text-field label="Password" type="password" v-model="writtenPassword"
+            :rules="[rules.required, rules.counter, rules.minvalue]"
+            v-on:keydown.enter.prevent="signup"></v-text-field>
+          <v-text-field label="Repeat Password" type="password" v-model="writtenRPassword"
+            :rules="[rules.required, rules.counter, rules.minvalue]"
+            v-on:keydown.enter.prevent="signup"></v-text-field>
           <span class="text-caption text-grey-darken-1">
             Please enter a password for your account
           </span>
@@ -52,8 +56,11 @@
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn v-if="step==2" variant="text" @click="step--">
+      <v-btn v-if="step == 2" variant="text" @click="step--">
         Back
+      </v-btn>
+      <v-btn v-if="step == 4" variant="text" @click="emailresend">
+        Resend
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn v-if="step == 1" color="primary" variant="flat" @click="page1">
@@ -63,7 +70,7 @@
         Sign-Up
       </v-btn>
       <v-btn v-if="(step == 4)" color="primary" variant="flat">
-        Resend
+        To Login Page
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -78,6 +85,7 @@ export default {
       step: 1,
       writtenEmail: '',
       writtenPassword: '',
+      writtenRPassword: '',
       rules: this.$store.state.ruleStore.rules,
       emb: false,
       errormessage: ''
@@ -90,56 +98,81 @@ export default {
         case 1: return 'Email'
         case 2: return 'Create a password'
         case 3: return 'Processing'
-        default: return 'Final Check'
+        default: return 'Welcome!'
       }
     },
   },
   methods: {
     page1() {
       console.log()
-      if(typeof(this.rules.required(this.writtenEmail))=='string'){
+      if (typeof (this.rules.required(this.writtenEmail)) == 'string') {
         toast.error(this.rules.required(this.writtenEmail), {
           autoClose: 1000,
         })
-      }else if(typeof(this.rules.email(this.writtenEmail))=='string'){
+      } else if (typeof (this.rules.email(this.writtenEmail)) == 'string') {
         toast.error(this.rules.email(this.writtenEmail), {
           autoClose: 1000,
         })
-      }else{
+      } else {
         this.step++
       }
     },
-    page2(){
-
+    emailresend() {
+      this.step--;
+      let payload={}
+      payload.email = this.writtenEmail
+      this.$axios
+          .post("http://localhost:8000/api/accounts/v1/registration/resend-email/", JSON.stringify(payload), {
+            headers: {
+              "Content-Type": `application/json`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              // 로그인 성공시 처리해줘야할 부분
+              console.log(res)
+              this.step++
+            }
+          })
+          .catch(error => {
+            this.step = 4
+            toast.error(error.request.responseText, {
+              autoClose: 1000,
+            })
+          })
     },
     signup() {
       let payload = {}
-      payload.Username = ''
-      payload.Email = this.writtenEmail
-      payload.Password1 = this.writtenPassword
-      payload.Password2 = this.writtenPassword
-
-      this.$axios
-        .post("http://localhost:8000/api/accounts/v1/registration/", JSON.stringify(payload), {
-          headers: {
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            // 로그인 성공시 처리해줘야할 부분
-            let payload2 = {}
-            payload2.userEmail = res.data.user.email
-            payload2.token = res.data.access_token
-            console.log(res)
-            this.$store.commit("signup", payload2)
-          }
-        })
-        .catch(error=> {
-        toast.error(error.request.responseText, {
+      payload.email = this.writtenEmail
+      payload.password1 = this.writtenPassword
+      payload.password2 = this.writtenRPassword
+      if (this.writtenRPassword != this.writtenRPassword) {
+        toast.error(this.rules.email(this.writtenEmail), {
           autoClose: 1000,
         })
-      })
+      }
+      else {
+        this.step++
+        this.$axios
+          .post("http://localhost:8000/api/accounts/v1/registration/", JSON.stringify(payload), {
+            headers: {
+              "Content-Type": `application/json`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 201) {
+              // 로그인 성공시 처리해줘야할 부분
+              console.log(res)
+              this.step++
+            }
+          })
+          .catch(error => {
+            this.step = 1
+            toast.error(error.request.responseText, {
+              autoClose: 1000,
+            })
+          })
+      }
     }
   }
 }
