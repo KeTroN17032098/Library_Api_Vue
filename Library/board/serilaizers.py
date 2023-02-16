@@ -17,14 +17,24 @@ class ThreadImagesSerializer(serializers.ModelSerializer):
         model=ThreadImage
         fields=['image']
 
+class GetThreadCommentsSerializer(serializers.ModelSerializer):
+    body=serializers.CharField(read_only=True)
+    created_by=UserInfoSerializer(read_only=True)
+    modified_by=UserInfoSerializer(read_only=True)
+    class Meta:
+        model=Comment
+        fields=['body','created_by','modified_by','created_on','modified_on']
+
+
 class GetThreadSerializer(serializers.ModelSerializer):
     images=serializers.SerializerMethodField()
     files=serializers.SerializerMethodField()
     created_by=UserInfoSerializer(read_only=True)
     modified_by=UserInfoSerializer(read_only=True)
+    comments=GetThreadCommentsSerializer(source='comment_set',many=True,read_only=True)
     class Meta:
         model = Thread
-        fields =['id','title','body','images','files','created_by','modified_by','created_on','modified_on']
+        fields =['id','title','body','images','files','created_by','modified_by','created_on','modified_on','comments']
     
     def get_images(self,obj):
         image=obj.threadimage_set.all()
@@ -33,6 +43,7 @@ class GetThreadSerializer(serializers.ModelSerializer):
     def get_files(self,obj):
         file=obj.threadfile_set.all()
         return ThreadFilesSerializer(instance=file,many=True,context=self.context).data
+
         
 class PPThreadSerializer(serializers.Serializer):
     title=serializers.CharField(max_length=100)

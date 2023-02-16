@@ -9,7 +9,7 @@ from rest_framework.parsers import FileUploadParser
 from .permission import OwnerandAdminCanRewrite
 from django.utils.translation import gettext_lazy as _
 from .serilaizers import PostCommentSerializer,PPThreadSerializer,PutCommentSerializer,GetThreadSerializer,GetCommentSerializer,ThreadFilesSerializer,ThreadImagesSerializer
-from django.core.paginator import Paginator
+from Library.pagination import PaginationHandlerMixin,DefaultResultsSetPagination
 # Create your views here.
 
 class ThreadFileUploadView(APIView):
@@ -90,18 +90,19 @@ class ThreadImageGTView(APIView):
             ls.delete()
             return Response(_("Delete Completed"),status.HTTP_200_OK)
 
-class ThreadApiView(APIView):
+class ThreadApiView(APIView,PaginationHandlerMixin):
     permission_classes =[IsAuthenticated,OwnerandAdminCanRewrite]
-
+    pagination_class=DefaultResultsSetPagination
     
     def get(self, request,**kwargs):
         number = kwargs.get('number')
         if number is None:
             queryset=Thread.objects.all()
-            page_number=self.request.query_param.get('page_number',1)
-            page_size=self.request.query_param.get('page_size',10)
-            paginator=Paginator(queryset,page_size)
-            serializer=GetThreadSerializer(paginator.page(page_number),many=True)
+            page=self.paginate_queryset(queryset)
+            if page is None:
+                serializer=GetThreadSerializer(queryset,many=True)
+            else:
+                serializer=self.get_paginated_response(GetThreadSerializer(page,many=True).data)
             return Response(serializer.data,status=status.HTTP_200_OK)
         else:
             try:

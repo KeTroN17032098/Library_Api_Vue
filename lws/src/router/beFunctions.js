@@ -37,13 +37,15 @@ let requireAuth = function requireAuth(to, from, next) {
                         })
                 }
             })
+            .finally(function() {
+                if (isverified) {
+                    return next()
+                } else {
+                    return next('/login')
+                }
+            })
     } else {
         isverified = false
-    }
-    console.log(isverified)
-    if (isverified) {
-        return next()
-    } else {
         return next('/login')
     }
 }
