@@ -37,10 +37,6 @@ const userStore = {
                 name: 'login'
             })
         },
-        signup: function(state, payload) {
-
-        },
-
     }
 }
 

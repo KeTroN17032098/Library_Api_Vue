@@ -23,7 +23,7 @@ class GetThreadCommentsSerializer(serializers.ModelSerializer):
     modified_by=UserInfoSerializer(read_only=True)
     class Meta:
         model=Comment
-        fields=['body','created_by','modified_by','created_on','modified_on']
+        fields=['id','body','created_by','modified_by','created_on','modified_on']
 
 
 class GetThreadSerializer(serializers.ModelSerializer):
