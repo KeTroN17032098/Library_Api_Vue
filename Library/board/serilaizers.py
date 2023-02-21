@@ -31,10 +31,11 @@ class GetThreadSerializer(serializers.ModelSerializer):
     files=serializers.SerializerMethodField()
     created_by=UserInfoSerializer(read_only=True)
     modified_by=UserInfoSerializer(read_only=True)
+    comments_count=serializers.SerializerMethodField()
     comments=GetThreadCommentsSerializer(source='comment_set',many=True,read_only=True)
     class Meta:
         model = Thread
-        fields =['id','title','body','images','files','created_by','modified_by','created_on','modified_on','comments']
+        fields =['id','title','body','images','files','created_by','modified_by','created_on','modified_on','comments_count','comments']
     
     def get_images(self,obj):
         image=obj.threadimage_set.all()
@@ -43,6 +44,9 @@ class GetThreadSerializer(serializers.ModelSerializer):
     def get_files(self,obj):
         file=obj.threadfile_set.all()
         return ThreadFilesSerializer(instance=file,many=True,context=self.context).data
+    
+    def get_comments_count(self,obj):
+        return obj.comment_set.count()
 
         
 class PPThreadSerializer(serializers.Serializer):
